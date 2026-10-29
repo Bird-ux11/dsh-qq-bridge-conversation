@@ -11,5 +11,17 @@
 - `agent.followup(...)` 的 `source` 里多了 `identityVault` 字段：`qqId`、`chatType`、`chatId`、`groupId`、`displayName`、`upstreamFirstMessageId`、`observedAt`、`userTextSpan`、`replyOnlyMarked`。
 - 身份库（`dsh-identity-vault`）靠它把「谁在哪个群说了这句话」记进这个人物自己的档案；在此之前只能知道「有一条 QQ 消息进来了」。
 - 校验不过就返回 `null`，`source` 退回上游的 `{ kind: 'qq' }`——改造失败时与上游行为一致。
-- 改动位置：`lib/host.js` 的 `agent.followup(...)` 一处，`+44 / -1` 行，用 `/* dsh-identity-vault:qq-source:v2:begin */` … `:end */` 标出来。
+- 改动位置：`lib/host.js` 的 `agent.followup(...)` 一处，`+44 / -1` 行，用 `/* dsh-identity-vault:qq-source:v3:begin */` … `:end */` 标出来。
 - 新增两个账本文件：`lib/host.js.identity-vault.original`（上游原版）与 `lib/host.js.identity-vault.adapter.json`（版本、标记名、两个 sha256）。
+
+**`[QQ]` 标记收紧：必须独占一行**
+
+- 上游 `1.0.4` 的处理是「只写了开头、没写结尾 → 按『开头之后全是要发的』发出去」。这一条在 2026-10-29 造成过事故：正文里顺口提到那个标记（在解释发送机制），桥当成真的开头，把一整段本机独白拆成 9 条发进了群。
+- 现在 `抠QQ标记(文字, 只发标记内)` 改成**按行判断**：
+  - `^\s*\[\s*QQ\s*\]\s*$` 的开头行 + 它后面第一个 `^\s*\[\s*\/\s*QQ\s*\]\s*$` 的结尾行，只发两者之间的内容；
+  - 句子中间出现的标记**一律不算**，只当普通文字；
+  - 只有开头行、后面没有结尾行 → **这一轮一条都不发**，并记下原因（宁可不发，也不乱发）；
+  - 块里是空的 → 不发。
+- 给 agent 的那段提示语（`lib/host.js` 里 `块提示`）也同步写明「两个标记都必须单独占一行」。
+- 覆盖用例见测试：完整块 / 正文提到标记 / 缺结尾 / 无标记 / 空块 / 多个块取第一个 / 前后空格 / 小写 qq / 多行 / 块内夹标记 / 开关关闭，11 项全过。
+
