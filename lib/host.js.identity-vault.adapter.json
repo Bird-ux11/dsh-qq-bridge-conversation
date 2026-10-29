@@ -1,0 +1,10 @@
+{
+  "adapterVersion": 2,
+  "bridgeVersion": "1.0.7",
+  "marker": "dsh-identity-vault:qq-source:v2",
+  "originalHash": "3efebe3e9b9a51368c3c4f7215032bfa5ef264be7e474103ddd4c7d5d8865625",
+  "patchedHash": "b3141319e0bb160db56d6d4d83093bfa9aa80ec9f20cb7ab209354caf4655038",
+  "createdAt": "2026-10-27T03:54:14.087Z",
+  "upgradedAt": "2026-10-27T04:34:19.339Z",
+  "previousAdapterVersion": 1
+}
