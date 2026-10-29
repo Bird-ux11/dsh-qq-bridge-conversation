@@ -3,8 +3,8 @@
     "bridgeVersion":  "1.0.7-conversation.1",
     "marker":  "dsh-identity-vault:qq-source:v3",
     "originalHash":  "3efebe3e9b9a51368c3c4f7215032bfa5ef264be7e474103ddd4c7d5d8865625",
-    "patchedHash":  "4cc443ebb2c7cb0935aa299f8fbfae5e687de39b6fe5137464cbc8d0b5f0b620",
+    "patchedHash":  "92fb3ddafb77ae7eea4dda1f912b151feae875074e8c4d3da8730b2a9d61dc79",
     "createdAt":  "2026-10-28T04:24:11.043Z",
     "tightenedAt":  "2026-10-29T02:45:00.000Z",
-    "tightenNote":  "markers must occupy a whole line; a lone opening marker no longer sends the rest"
+    "tightenNote":  "markers must occupy a whole line; a lone opening marker no longer sends the rest; owner messages in groups are no longer treated as own"
 }
